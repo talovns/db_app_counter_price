@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1110</width>
+    <height>703</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: rgb(82, 73, 109);
+font: 14pt &quot;Segoe UI&quot;;</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0" alignment="Qt::AlignmentFlag::AlignHCenter">
+     <widget class="QFrame" name="bothqframe">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>1000</width>
+        <height>600</height>
+       </size>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <property name="spacing">
+        <number>30</number>
+       </property>
+       <item>
+        <widget class="QFrame" name="highsize">
+         <property name="maximumSize">
+          <size>
+           <width>500</width>
+           <height>23423</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(65, 65, 65);
+border: 1px solid #000000;
+border-radius: 20px; 
+</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <item>
+             <widget class="QLabel" name="priceless_season">
+              <property name="maximumSize">
+               <size>
+                <width>220</width>
+                <height>50</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding-left: 10px;
+background-color: rgb(54, 54, 54);
+border: None;
+font: 18pt &quot;Segoe UI&quot;;</string>
+              </property>
+              <property name="text">
+               <string>Потрачено всего </string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <item>
+             <widget class="QLabel" name="price_season">
+              <property name="styleSheet">
+               <string notr="true">font: 24pt &quot;Segoe UI&quot;;
+padding-left: 10px;
+background-color: rgb(117, 117, 117);</string>
+              </property>
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="icon_rub_season">
+              <property name="maximumSize">
+               <size>
+                <width>40</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(24, 24, 24);
+padding-left: 8px</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="pixmap">
+               <pixmap resource="res-rc.qrc">:/icons/icons/rubly.svg</pixmap>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="categories">
+         <property name="maximumSize">
+          <size>
+           <width>700</width>
+           <height>23423</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: rgb(65, 65, 65);
+border: 1px solid #000000;
+border-radius: 20px; 
+</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item alignment="Qt::AlignmentFlag::AlignHCenter">
+             <widget class="QLabel" name="category_label">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(54, 54, 54);
+padding-left: 70px;
+padding-right: 50px;
+border: None;
+</string>
+              </property>
+              <property name="text">
+               <string>Категория</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="priceless">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(54, 54, 54);
+padding-left: 60px;
+padding-right: 50px;
+border: None;
+</string>
+              </property>
+              <property name="text">
+               <string>Потрачено</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <widget class="QLabel" name="icon_edu">
+              <property name="maximumSize">
+               <size>
+                <width>35</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(24, 24, 24);
+padding-left: 5px;</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="pixmap">
+               <pixmap resource="res-rc.qrc">:/icons/icons/education.svg</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="edu_label">
+              <property name="maximumSize">
+               <size>
+                <width>275</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(117, 117, 117);
+
+padding-left: 3px</string>
+              </property>
+              <property name="text">
+               <string>Образование </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="price_edu">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(117, 117, 117);
+padding-left: 4px;</string>
+              </property>
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="icon_rub_edu">
+              <property name="maximumSize">
+               <size>
+                <width>30</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(24, 24, 24);
+padding-left: 3px</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="pixmap">
+               <pixmap resource="res-rc.qrc">:/icons/icons/rubly.svg</pixmap>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <item>
+             <widget class="QLabel" name="icon_healhy">
+              <property name="maximumSize">
+               <size>
+                <width>35</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(24, 24, 24);
+padding-left: 5px</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="pixmap">
+               <pixmap resource="res-rc.qrc">:/icons/icons/healthy.svg</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="name_heal">
+              <property name="maximumSize">
+               <size>
+                <width>275</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(117, 117, 117);
+padding-left: 3px;</string>
+              </property>
+              <property name="text">
+               <string>Здоровье</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="price_heal">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(117, 117, 117);
+padding-left: 4px;</string>
+              </property>
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="rub_healhy">
+              <property name="maximumSize">
+               <size>
+                <width>30</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(24, 24, 24);
+
+padding-left: 3px</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="pixmap">
+               <pixmap resource="res-rc.qrc">:/icons/icons/rubly.svg</pixmap>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_7">
+            <item>
+             <widget class="QLabel" name="icon_food">
+              <property name="maximumSize">
+               <size>
+                <width>35</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(24, 24, 24);
+padding-left: 5px</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="pixmap">
+               <pixmap resource="res-rc.qrc">:/icons/icons/food.svg</pixmap>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="name_food">
+              <property name="maximumSize">
+               <size>
+                <width>275</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(117, 117, 117);
+padding-left: 3px;</string>
+              </property>
+              <property name="text">
+               <string>Еда</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="food_price">
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(117, 117, 117);
+padding-left: 4px;</string>
+              </property>
+              <property name="text">
+               <string>0</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="rub__icon_price">
+              <property name="maximumSize">
+               <size>
+                <width>30</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(24, 24, 24);
+
+padding-left: 3px</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="pixmap">
+               <pixmap resource="res-rc.qrc">:/icons/icons/rubly.svg</pixmap>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="1" column="0" alignment="Qt::AlignmentFlag::AlignHCenter">
+     <widget class="QFrame" name="buttons">
+      <property name="minimumSize">
+       <size>
+        <width>900</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>1000</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="toolTipDuration">
+       <number>-1</number>
+      </property>
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+      <layout class="QHBoxLayout" name="_2">
+       <property name="spacing">
+        <number>30</number>
+       </property>
+       <property name="leftMargin">
+        <number>9</number>
+       </property>
+       <property name="rightMargin">
+        <number>9</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="create_db">
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+border-radius: 5px;
+background-color: rgb(42, 42, 42);
+border: 1px solid #000000;
+border-radius: 5px;
+wieght: 250px;
+hight: 50px;
+padding: 12px 16px;
+margin: 0px 0px 6px 0px; 
+}
+
+QPushButton:hover{
+	transform: translateY(-3px);
+	margin: 3px 0px 6px 0px; 
+    padding: 11px 19px 5px 19px; 
+}
+
+QPushButton:pressed{
+	background-color: rgb(102, 102, 102);
+}</string>
+         </property>
+         <property name="text">
+          <string>Создать базу данных</string>
+         </property>
+         <property name="icon">
+          <iconset resource="res-rc.qrc">
+           <normaloff>:/icons/icons/db.svg</normaloff>:/icons/icons/db.svg</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="edit_db">
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+border-radius: 5px;
+background-color: rgb(42, 42, 42);
+border: 1px solid #000000;
+border-radius: 5px;
+wieght: 250px;
+hight: 50px;
+padding: 12px 16px;
+margin: 0px 0px 6px 0px; 
+}
+
+QPushButton:hover{
+	transform: translateY(-3px);
+	margin: 3px 0px 6px 0px; 
+    padding: 11px 19px 5px 19px; 
+}
+
+QPushButton:pressed{
+	background-color: rgb(102, 102, 102);
+}</string>
+         </property>
+         <property name="text">
+          <string>Редактировать базу данных</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="new_order2">
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+border-radius: 5px;
+background-color: rgb(42, 42, 42);
+border: 1px solid #000000;
+border-radius: 5px;
+wieght: 250px;
+hight: 50px;
+padding: 12px 16px;
+margin: 0px 0px 6px 0px; 
+}
+
+QPushButton:hover{
+	transform: translateY(-3px);
+	margin: 3px 0px 6px 0px; 
+    padding: 11px 19px 5px 19px; 
+}
+
+QPushButton:pressed{
+	background-color: rgb(102, 102, 102);
+}</string>
+         </property>
+         <property name="text">
+          <string>Добавить покупку </string>
+         </property>
+         <property name="icon">
+          <iconset resource="res-rc.qrc">
+           <normaloff>:/icons/icons/add.svg</normaloff>:/icons/icons/add.svg</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QTableView" name="tableView">
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QTableView{
+background-color: rgb(65, 65, 65);
+border: 1px solid #000000;
+border-radius: 15px; 
+}
+QTableView:section{
+border:Node;
+background-color: rgb(34, 34, 34);
+height: 50px;
+font-size: 14px;
+}
+QTableView:item{
+border-style: None;
+border-bottom: rgba(255, 255, 255, 40)
+}
+QTableView:item:selected{
+border: None;
+background-color: rgb(126, 126, 126);
+border-bottom: rgba(255, 255, 255, 40);
+}
+</string>
+      </property>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+      </property>
+      <property name="showGrid">
+       <bool>false</bool>
+      </property>
+      <attribute name="horizontalHeaderDefaultSectionSize">
+       <number>135</number>
+      </attribute>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources>
+  <include location="res-rc.qrc"/>
+ </resources>
+ <connections/>
+</ui>

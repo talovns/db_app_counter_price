@@ -1,0 +1,11 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>icons/rubly.svg</file>
+    <file>icons/add.svg</file>
+    <file>icons/db.svg</file>
+    <file>icons/done.svg</file>
+    <file>icons/education.svg</file>
+    <file>icons/food.svg</file>
+    <file>icons/healthy.svg</file>
+  </qresource>
+</RCC>
