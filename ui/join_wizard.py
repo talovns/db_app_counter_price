@@ -1,114 +1,142 @@
-
 from PySide6 import QtCore, QtWidgets
 from db.inspector import fetch_tables, fetch_columns
 from db.runner import execute_sql
 
-JOIN_TYPES = ["INNER JOIN", "LEFT JOIN", "RIGHT JOIN", "FULL JOIN"]
-
 class JoinWizard(QtWidgets.QDialog):
-    sqlReady = QtCore.Signal(str)
-    dataReady = QtCore.Signal(list, list)  # headers, rows
+    sqlReady  = QtCore.Signal(str)
+    dataReady = QtCore.Signal(list, list)   # headers, rows
     errorRaised = QtCore.Signal(str)
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, conn=None):
         super().__init__(parent)
         self.setWindowTitle("Мастер JOIN")
-        self.setObjectName("JoinWizard")
-        self.resize(900, 600)
+        self.conn = conn
 
-        main = QtWidgets.QVBoxLayout(self)
+        # ---- UI ----
+        lay = QtWidgets.QVBoxLayout(self)
 
-        selects = QtWidgets.QHBoxLayout()
-        self.leftTable = QtWidgets.QComboBox()
+        # выбор таблиц
+        tRow = QtWidgets.QHBoxLayout()
+        self.leftTable  = QtWidgets.QComboBox()
         self.rightTable = QtWidgets.QComboBox()
-        self.joinType = QtWidgets.QComboBox(); self.joinType.addItems(JOIN_TYPES)
-        selects.addWidget(QtWidgets.QLabel("Левая таблица:")); selects.addWidget(self.leftTable, 1)
-        selects.addWidget(QtWidgets.QLabel("Правая таблица:")); selects.addWidget(self.rightTable, 1)
-        selects.addWidget(QtWidgets.QLabel("Тип:")); selects.addWidget(self.joinType)
+        tRow.addWidget(QtWidgets.QLabel("Левая таблица:"))
+        tRow.addWidget(self.leftTable, 1)
+        tRow.addSpacing(12)
+        tRow.addWidget(QtWidgets.QLabel("Правая таблица:"))
+        tRow.addWidget(self.rightTable, 1)
+        lay.addLayout(tRow)
 
-        self.conds = QtWidgets.QListWidget()
-        self.addCondBtn = QtWidgets.QPushButton("＋ Условие users.id = expenses.user_id")
+        # колонки
+        colsRow = QtWidgets.QHBoxLayout()
+        self.leftCols  = QtWidgets.QListWidget()
+        self.rightCols = QtWidgets.QListWidget()
+        self.leftCols.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
+        self.rightCols.setSelectionMode(QtWidgets.QAbstractItemView.MultiSelection)
+        colsRow.addWidget(self.leftCols, 1)
+        colsRow.addWidget(self.rightCols, 1)
+        lay.addLayout(colsRow)
 
-        colsLay = QtWidgets.QHBoxLayout()
-        self.leftCols = QtWidgets.QListWidget(); self.leftCols.setSelectionMode(self.leftCols.MultiSelection)
-        self.rightCols = QtWidgets.QListWidget(); self.rightCols.setSelectionMode(self.rightCols.MultiSelection)
-        colsLay.addWidget(self.leftCols,1); colsLay.addWidget(self.rightCols,1)
+        # ключи + тип join
+        joinRow = QtWidgets.QHBoxLayout()
+        self.joinType  = QtWidgets.QComboBox()
+        self.joinType.addItems(["INNER", "LEFT", "RIGHT", "FULL"])
+        self.leftKey   = QtWidgets.QComboBox()
+        self.rightKey  = QtWidgets.QComboBox()
+        joinRow.addWidget(QtWidgets.QLabel("Тип JOIN:"))
+        joinRow.addWidget(self.joinType)
+        joinRow.addSpacing(10)
+        joinRow.addWidget(QtWidgets.QLabel("Ключи:"))
+        joinRow.addWidget(self.leftKey, 1)
+        joinRow.addWidget(QtWidgets.QLabel("="))
+        joinRow.addWidget(self.rightKey, 1)
+        lay.addLayout(joinRow)
 
-        self.preview = QtWidgets.QPlainTextEdit(); self.preview.setReadOnly(True)
-        btns = QtWidgets.QHBoxLayout()
-        self.previewBtn = QtWidgets.QPushButton("Предпросмотр SQL")
-        self.runBtn = QtWidgets.QPushButton("Выполнить")
-        btns.addWidget(self.previewBtn); btns.addWidget(self.runBtn)
+        # кнопки
+        btnRow = QtWidgets.QHBoxLayout()
+        self.btnPreview = QtWidgets.QPushButton("Предпросмотр SQL")
+        self.btnRun     = QtWidgets.QPushButton("Выполнить")
+        self.btnClose   = QtWidgets.QPushButton("Закрыть")
+        btnRow.addWidget(self.btnPreview)
+        btnRow.addWidget(self.btnRun)
+        btnRow.addStretch(1)
+        btnRow.addWidget(self.btnClose)
+        lay.addLayout(btnRow)
 
-        main.addLayout(selects)
-        main.addWidget(QtWidgets.QLabel("Условия ON:"))
-        main.addWidget(self.conds,1)
-        main.addWidget(self.addCondBtn,0)
-        main.addWidget(QtWidgets.QLabel("Выбор колонок результата:"))
-        main.addLayout(colsLay,1)
-        main.addWidget(QtWidgets.QLabel("SQL:"))
-        main.addWidget(self.preview,1)
-        main.addLayout(btns)
+        self.btnClose.clicked.connect(self.reject)
+        self.btnPreview.clicked.connect(self._preview)
+        self.btnRun.clicked.connect(self._run)
+
+        self.leftTable.currentTextChanged.connect(self._reload_left)
+        self.rightTable.currentTextChanged.connect(self._reload_right)
 
         self._load_tables()
-        self.leftTable.currentTextChanged.connect(self._load_left_cols)
-        self.rightTable.currentTextChanged.connect(self._load_right_cols)
-        self.addCondBtn.clicked.connect(self._add_default_cond)
-        self.previewBtn.clicked.connect(self._do_preview)
-        self.runBtn.clicked.connect(self._do_run)
 
+    # ---- data loading ----
     def _load_tables(self):
-        tables = fetch_tables('public')
-        self.leftTable.addItems(tables)
-        self.rightTable.addItems(tables)
-        if tables:
-            self._load_left_cols(tables[0])
-            self._load_right_cols(tables[0])
+        if self.conn is None:
+            return
+        tables = fetch_tables(self.conn, 'public')
+        self.leftTable.clear();  self.leftTable.addItems(tables)
+        self.rightTable.clear(); self.rightTable.addItems([""] + tables)
+        # загрузим сразу колонки для выбранных
+        self._reload_left(); self._reload_right()
 
-    def _load_left_cols(self, t):
-        self.leftCols.clear()
-        for c, _ in fetch_columns(t, 'public'):
-            self.leftCols.addItem(f"{t}.{c}")
+    def _reload_left(self):
+        self.leftCols.clear(); self.leftKey.clear()
+        t = self.leftTable.currentText()
+        if not t or self.conn is None:
+            return
+        cols = [c for c, _ in fetch_columns(self.conn, t, 'public')]
+        self.leftCols.addItems([f"{t}.{c}" for c in cols])
+        self.leftKey.addItems([f"{t}.{c}" for c in cols])
 
-    def _load_right_cols(self, t):
-        self.rightCols.clear()
-        for c, _ in fetch_columns(t, 'public'):
-            self.rightCols.addItem(f"{t}.{c}")
+    def _reload_right(self):
+        self.rightCols.clear(); self.rightKey.clear()
+        t = self.rightTable.currentText()
+        if not t or self.conn is None:
+            return
+        cols = [c for c, _ in fetch_columns(self.conn, t, 'public')]
+        self.rightCols.addItems([f"{t}.{c}" for c in cols])
+        self.rightKey.addItems([f"{t}.{c}" for c in cols])
 
-    def _add_default_cond(self):
-        lt = self.leftTable.currentText() or "users"
-        rt = self.rightTable.currentText() or "expenses"
-        it = QtWidgets.QListWidgetItem(f"{lt}.id = {rt}.{lt}_id")
-        it.setFlags(it.flags() | QtCore.Qt.ItemIsEditable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsSelectable)
-        self.conds.addItem(it); self.conds.editItem(it)
+    # ---- SQL builder/run ----
+    def _build_sql(self) -> str:
+        lt = self.leftTable.currentText().strip()
+        rt = self.rightTable.currentText().strip()
+        if not lt:
+            raise RuntimeError("Не выбрана левая таблица.")
 
-    def build_sql(self) -> str:
-        lt = self.leftTable.currentText()
-        rt = self.rightTable.currentText()
-        join = self.joinType.currentText()
-        if not lt or not rt:
-            raise RuntimeError("Выберите обе таблицы.")
-        on_conds = " AND ".join([self.conds.item(i).text() for i in range(self.conds.count())]) or "TRUE"
-        cols = [i.text() for i in self.leftCols.selectedItems()] + [i.text() for i in self.rightCols.selectedItems()]
-        select = ", ".join(cols) if cols else "*"
-        sql = f"SELECT {select}\nFROM {lt}\n{join} {rt} ON {on_conds};"
-        return sql
+        # выбранные колонки
+        left_sel  = [i.text() for i in self.leftCols.selectedItems()]
+        right_sel = [i.text() for i in self.rightCols.selectedItems()]
+        select_cols = left_sel + right_sel
+        if not select_cols:
+            select_cols = [f"{lt}.*"]  # по умолчанию все
 
-    def _do_preview(self):
+        parts = [f"SELECT {', '.join(select_cols)}", f"FROM {lt}"]
+
+        if rt:
+            jt = self.joinType.currentText().upper()
+            lk = self.leftKey.currentText().strip()
+            rk = self.rightKey.currentText().strip()
+            if not lk or not rk:
+                raise RuntimeError("Выберите ключи для соединения.")
+            parts.append(f"{jt} JOIN {rt} ON {lk} = {rk}")
+
+        return "\n".join(parts) + ";"
+
+    def _preview(self):
         try:
-            sql = self.build_sql()
-            self.preview.setPlainText(sql)
+            sql = self._build_sql()
             self.sqlReady.emit(sql)
         except Exception as e:
-            self.errorRaised.emit(str(e))
+            QtWidgets.QMessageBox.warning(self, "Ошибка", str(e))
 
-    def _do_run(self):
+    def _run(self):
         try:
-            sql = self.build_sql()
-            headers, rows = execute_sql(sql)
-            self.preview.setPlainText(sql)
+            sql = self._build_sql()
+            headers, rows = execute_sql(self.conn, sql)
             self.sqlReady.emit(sql)
             self.dataReady.emit(headers, rows)
-            self.accept()
         except Exception as e:
-            self.errorRaised.emit(str(e))
+            QtWidgets.QMessageBox.warning(self, "Ошибка выполнения", str(e))
